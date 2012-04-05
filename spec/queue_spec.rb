@@ -4,10 +4,11 @@ require File.expand_path("../minitest_helper", __FILE__)
 
 describe "Queue" do
 
-  after do
+  before do
     Callisto::Queue.stack.replace([])
-    Callisto::Queue.processes.replace([])
+    Callisto::Queue.processes.replace({})
     Callisto::Queue.max_processes = 10
+    Callisto::Queue.identity = false
   end
 
   it "should run a task" do
@@ -37,6 +38,41 @@ describe "Queue" do
     File.unlink(file1.path)
     File.unlink(file2.path)
     File.unlink(file3.path)
+  end
+
+  describe "when running the same (identical) task more than once" do
+
+    before do
+      Callisto::Queue.identity = proc { |task| task[:id] }
+      Callisto::Queue.callback = proc { |task| task[:data].call }
+    end
+
+    it "should not run the task" do
+      Callisto::Queue << { :id => 1, :data => proc { sleep 1 } }
+      4.times {
+        Callisto::Queue << { :id => 2, :data => proc { sleep 1 } }
+      }
+      Callisto::Queue.processes.count.must_equal 2
+    end
+
+    it "adding a task should return the original pid" do
+      pid1 = Callisto::Queue << { :id => 1, :data => proc { sleep 1 } }
+      pid2 = Callisto::Queue << { :id => 1, :data => proc { sleep 1 } }
+      pid3 = Callisto::Queue << { :id => 2, :data => proc { sleep 1 } }
+      pid1.must_equal pid2
+      pid1.wont_equal pid3
+    end
+
+    it "should not stack duplicates" do
+      Callisto::Queue.max_processes = 1
+      Callisto::Queue << { :id => 1, :data => proc { sleep 1 } }
+      4.times {
+        Callisto::Queue << { :id => 2, :data => proc { sleep 1 } }
+      }
+      Callisto::Queue << { :id => 3, :data => proc { sleep 1 } }
+      Callisto::Queue.stack.count.must_equal 2
+    end
+
   end
 
   describe "when max tasks reached" do
