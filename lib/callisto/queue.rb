@@ -2,7 +2,7 @@ module Callisto
 
   class Queue
 
-    attr_accessor :max_processes, :task
+    attr_accessor :max_processes, :task, :pid
     @@stack         = []
     @@processes     = {}
     @@max_processes = 10
@@ -48,11 +48,11 @@ module Callisto
           processes.each { |pid, running_task| return pid if entry.has?(running_task) }
           stack.each { |current_entry| return nil if entry.has?(current_entry.task) }
         end
+        self.stack << entry
         if processes.size < max_processes
           entry.process
         else
-          self.stack << entry
-          nil
+          nil # Task is pending
         end
       end
 
@@ -71,15 +71,20 @@ module Callisto
     end
 
     def process
-      pid = fork do
+      self.class.stack.delete(self)
+      self.pid = fork do
         self.class.callback.call(task)
       end
       self.class.processes[pid] = task
       Thread.new do
         Process.wait(pid)
-        self.class.processes.delete(pid)
+        destroy
       end
       pid
+    end
+
+    def destroy
+      self.class.processes.delete(pid)
     end
 
   end
