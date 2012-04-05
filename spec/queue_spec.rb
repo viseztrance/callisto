@@ -100,7 +100,18 @@ describe "Queue" do
 
   describe "when task is finished" do
 
-    it "should be removed from the running list"
+    before do
+      Callisto::Queue.callback = proc { |task| task.call }
+    end
+
+    it "should be removed from the running list" do
+      3.times {
+        Callisto::Queue << proc { sleep 1 }
+      }
+      Callisto::Queue.processes.count.must_equal 3
+      Callisto::Queue.wait
+      Callisto::Queue.processes.count.must_equal 0
+    end
 
     it "should run the first pending task"
 

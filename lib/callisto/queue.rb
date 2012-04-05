@@ -6,7 +6,7 @@ module Callisto
     @@stack         = []
     @@processes     = {}
     @@max_processes = 10
-    @@identity       = false
+    @@identity      = false
 
     class << self
 
