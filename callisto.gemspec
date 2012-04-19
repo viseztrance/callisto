@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["daniel@thegeek.ro"]
   gem.description   = %q{TODO: Write a gem description}
   gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/viseztrance/callisto"
 
   gem.add_development_dependency "minitest"
 
