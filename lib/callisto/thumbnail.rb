@@ -26,7 +26,8 @@ module Callisto
     def save
       location = File.join(root_path, prefix)
       FileUtils.mkdir_p(location) unless File.directory?(location)
-      %x[convert #{file_path} -strip -quality 90 -resize #{size}#{flag} #{crop} #{save_path}]
+      cmd = Shell.new("convert", "#{file_path} -strip -quality 90 -resize #{size}#{flag} #{crop} #{save_path}")
+      cmd.run
     end
 
     def save_path
@@ -58,7 +59,8 @@ module Callisto
     end
 
     def geometry
-      %x[identify -format "%wx%h" #{save_path}].chomp
+      cmd = Shell.new("identify", "-format \"%wx%h\" #{save_path}")
+      cmd.run
     end
 
   end
