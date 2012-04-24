@@ -9,6 +9,11 @@ end
 
 describe "Thumbnail" do
 
+  before do
+    reset_pool
+    Callisto::Configuration.load!
+  end
+
   describe "when saving" do
 
     before do

@@ -1,6 +1,11 @@
 require "tmpdir"
 require "fileutils"
 
+def reset_pool
+  Callisto::Pool.settings = {}
+  Callisto::Pool.reset_instance
+end
+
 class FileCreator
 
   attr_accessor :file_name

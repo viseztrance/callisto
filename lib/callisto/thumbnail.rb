@@ -27,7 +27,8 @@ module Callisto
       location = File.join(root_path, prefix)
       FileUtils.mkdir_p(location) unless File.directory?(location)
       cmd = Shell.new("convert", "#{file_path} -strip -quality 90 -resize #{size}#{flag} #{crop} #{save_path}")
-      cmd.run
+      pid = Callisto::Pool.instance << cmd
+      Callisto::Pool.instance.wait(pid)
     end
 
     def save_path

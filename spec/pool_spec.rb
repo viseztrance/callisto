@@ -5,8 +5,7 @@ require File.expand_path("../lib/callisto", File.dirname(__FILE__))
 describe "Pool" do
 
   before do
-    Callisto::Pool.settings = {}
-    Callisto::Pool.reset_instance
+    reset_pool
   end
 
   describe "when assigning a task" do
