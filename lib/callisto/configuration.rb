@@ -28,8 +28,7 @@ module Callisto
     end
 
     def method_missing(method, *args, &block)
-      if method.match(/^thumbnail_(\w+)(=)?/)
-        name, setter = $1, $2
+      if /^thumbnail_(?<name>\w+)(?<setter>=)?/ =~ method
         if setter
           self.thumbnail_defaults[name] = args.first
         else
