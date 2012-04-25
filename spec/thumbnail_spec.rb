@@ -1,6 +1,5 @@
 require "minitest/autorun"
 require File.expand_path("../minitest_helper", __FILE__)
-require File.expand_path("../lib/callisto", File.dirname(__FILE__))
 
 def cleanup(path)
   matcher = File.join(path, "*.*")
@@ -11,7 +10,7 @@ describe "Thumbnail" do
 
   before do
     reset_pool
-    Callisto::Configuration.load!
+    Callisto.configuration.load_defaults
   end
 
   describe "when saving" do

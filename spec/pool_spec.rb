@@ -1,6 +1,5 @@
 require "minitest/autorun"
 require File.expand_path("../minitest_helper", __FILE__)
-require File.expand_path("../lib/callisto", File.dirname(__FILE__))
 
 describe "Pool" do
 
