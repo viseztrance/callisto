@@ -17,11 +17,11 @@ describe "Thumbnail" do
 
     before do
       @options = {
-        :file_path => File.expand_path("fixtures/normal-photo.png", File.dirname(__FILE__)),
-        :root_path => File.expand_path("../tmp", File.dirname(__FILE__)),
-        :prefix    => "images",
-        :size      => "50x50",
-        :extension => ".jpg"
+        :file_path   => File.expand_path("fixtures/normal-photo.png", File.dirname(__FILE__)),
+        :root_path   => File.expand_path("../tmp", File.dirname(__FILE__)),
+        :prefix      => "images",
+        :size        => "50x50",
+        :extension   => ".jpg"
       }
     end
 
@@ -48,6 +48,12 @@ describe "Thumbnail" do
       thumbnail.save
       File.extname(thumbnail.save_path).must_equal ".png"
       File.exist?(thumbnail.save_path).must_equal true
+    end
+
+    it "should return the public file path" do
+      @options.merge!({ :public_path => "http://localhost:3000/images" })
+      thumbnail = Callisto::Thumbnail.new(@options)
+      thumbnail.save.must_equal "http://localhost:3000/images/#{thumbnail.name}"
     end
 
   end

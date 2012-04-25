@@ -7,7 +7,7 @@ module Callisto
 
     attr_accessor :file_path, :args, :flag
     attr_reader   :name, :crop
-    attr_writer   :extension, :root_path, :prefix, :size, :quality
+    attr_writer   :extension, :root_path, :prefix, :public_path, :size, :quality
 
     def initialize(args = {})
       args.each do |name, value|
@@ -17,21 +17,27 @@ module Callisto
     end
 
     def name=(value)
-      token = Digest::MD5.hexdigest(file_path.gsub(root_path, "") + value.to_s)
+      token = Digest::MD5.hexdigest(file_path.gsub(root_path.to_s, "") + value.to_s)
       @name = token + extension
     end
 
     def save
       location = File.join(root_path, prefix)
-      return if File.exist?(save_path)
-      FileUtils.mkdir_p(location) unless File.directory?(location)
-      task = Shell.new("convert", "#{file_path} -strip -quality #{quality || 90} -resize #{size}#{flag} #{crop} #{save_path}")
-      pid = Callisto::Pool.instance << task
-      Callisto::Pool.instance.wait(pid)
+      if !File.exist?(save_path)
+        FileUtils.mkdir_p(location) unless File.directory?(location)
+        task = Shell.new("convert", "#{file_path} -strip -quality #{quality || 90} -resize #{size}#{flag} #{crop} #{save_path}")
+        pid = Callisto::Pool.instance << task
+        Callisto::Pool.instance.wait(pid)
+      end
+      public_path
     end
 
     def save_path
       File.join(root_path, prefix, name)
+    end
+
+    def public_path
+      File.join((@public_path || Callisto.configuration.thumbnail_public_path).to_s, name)
     end
 
     def crop=(value)
