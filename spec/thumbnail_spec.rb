@@ -89,4 +89,14 @@ describe "Thumbnail" do
 
   end
 
+  it "should inherit and fallback configuration" do
+    Callisto.configure do |config|
+      config.thumbnail_root_path = "some/path"
+      config.thumbnail_prefix = "img"
+    end
+    thumbnail = Callisto::Thumbnail.new(:fixed_size => "125x125", :file_path => "some_file.txt")
+    thumbnail.root_path.must_equal "some/path"
+    thumbnail.prefix.must_equal "img"
+  end
+
 end

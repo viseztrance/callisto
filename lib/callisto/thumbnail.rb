@@ -5,11 +5,9 @@ module Callisto
 
   class Thumbnail
 
-    attr_accessor :file_path, :root_path, :prefix, :args, :size, :flag
-
-    attr_reader :name, :crop
-
-    attr_writer :extension
+    attr_accessor :file_path, :args, :flag
+    attr_reader   :name, :crop
+    attr_writer   :extension, :root_path, :prefix, :size, :quality
 
     def initialize(args = {})
       args.each do |name, value|
@@ -41,7 +39,13 @@ module Callisto
     end
 
     def extension
-      @extension || File.extname(file_path)
+      @extension || Callisto.configuration.thumbnail_extension || File.extname(file_path)
+    end
+
+    %w(root_path prefix size quality).each do |attr|
+      define_method attr do
+        instance_variable_get("@#{attr}") || Callisto.configuration.send("thumbnail_#{attr}")
+      end
     end
 
     def fixed_size=(val)
