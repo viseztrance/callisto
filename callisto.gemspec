@@ -4,8 +4,8 @@ require File.expand_path('../lib/callisto/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Daniel Mircea"]
   gem.email         = ["daniel@thegeek.ro"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = "Image thumbnails on the fly"
+  gem.summary       = "Callisto"
   gem.homepage      = "https://github.com/viseztrance/callisto"
 
   gem.add_development_dependency "minitest"
