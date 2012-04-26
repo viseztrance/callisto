@@ -1,3 +1,5 @@
+require "delegate"
+
 module Callisto
 
   class Configuration
@@ -14,6 +16,8 @@ module Callisto
         :quality => 90
       }
 
+      SHELL = {}
+
     end
 
     attr_accessor :thumbnail_defaults
@@ -25,10 +29,15 @@ module Callisto
     def reset
       self.thumbnail_defaults = Defaults::THUMBNAIL
       Pool.settings = Defaults::POOL
+      Shell.bin_path = Defaults::SHELL[:bin_path]
     end
 
     def max_workers=(val)
       Pool.settings.max_workers = val
+    end
+
+    def bin_path=(val)
+      Shell.bin_path = val
     end
 
     def method_missing(method, *args, &block)

@@ -17,11 +17,11 @@ module Callisto
           :identifier  => proc { |entry| entry.object_id },
           :callback    => proc { |entry| entry.call }
         }
-        @@settings = OpenStruct.new(defaults.merge(options))
+        @settings = OpenStruct.new(defaults.merge(options))
       end
 
       def settings
-        @@settings
+        @settings
       end
 
     end
