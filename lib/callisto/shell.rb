@@ -5,7 +5,11 @@ module Callisto
     attr_accessor :executable, :arguments
 
     def self.bin_path=(path)
-      @@bin_path = path
+      @bin_path = path
+    end
+
+    def self.bin_path
+      @bin_path
     end
 
     def initialize(executable, arguments)
@@ -14,11 +18,7 @@ module Callisto
     end
 
     def command
-      prefix = if defined?(@@bin_path)
-                 File.join(@@bin_path, executable)
-               else
-                 executable
-               end
+      prefix = File.join(*[self.class.bin_path, executable].compact)
       "#{prefix} #{arguments}"
     end
 
