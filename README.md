@@ -26,7 +26,7 @@ A thumbnail may be generated as follows:
       :public_path      => "/images/cache",
       :fixed_size       => "140x90"
     }
-    thumbnail = Callisto::Thumbnail.new
+    thumbnail = Callisto::Thumbnail.new(options)
     thumbnail.save # Returns the file name using the `public_path`
 
 The image name generated is based on the parameters used. However the `root_path` will always be ignored, in order to allow the application path to be changed without having to regenerate the thumbnails (eg. this always happens after a deploy when using capistrano).
