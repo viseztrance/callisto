@@ -1,11 +1,6 @@
 require "minitest/autorun"
 require File.expand_path("../minitest_helper", __FILE__)
 
-def cleanup(path)
-  matcher = File.join(path, "*.*")
-  Dir[matcher].each { |entry| File.unlink(entry) }
-end
-
 describe "Thumbnail" do
 
   before do

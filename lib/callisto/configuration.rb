@@ -27,9 +27,9 @@ module Callisto
     end
 
     def reset
-      self.thumbnail_defaults = Defaults::THUMBNAIL
-      Pool.settings = Defaults::POOL
-      Shell.bin_path = Defaults::SHELL[:bin_path]
+      self.thumbnail_defaults = Defaults::THUMBNAIL.clone
+      Pool.settings = Defaults::POOL.clone
+      Shell.bin_path = Defaults::SHELL.clone[:bin_path]
     end
 
     def max_workers=(val)
@@ -43,12 +43,12 @@ module Callisto
     def method_missing(method, *args, &block)
       if /^thumbnail_(?<name>[a-z\_]+)(?<setter>=)?/ =~ method
         if setter
-          self.thumbnail_defaults[name] = args.first
+          self.thumbnail_defaults[name.to_sym] = args.first
         else
-          thumbnail_defaults[name]
+          thumbnail_defaults[name.to_sym]
         end
       else
-        super
+        super(method, *args, &block)
       end
     end
 

@@ -6,3 +6,8 @@ def reset_pool
   Callisto::Pool.settings = {}
   Callisto::Pool.reset_instance
 end
+
+def cleanup(path)
+  matcher = File.join(path, "*.*")
+  Dir[matcher].each { |entry| File.unlink(entry) }
+end
