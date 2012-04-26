@@ -27,14 +27,14 @@ A thumbnail may be generated as follows:
       :fixed_size       => "140x90"
     }
     thumbnail = Callisto::Thumbnail.new(options)
-    thumbnail.save # Returns the file name using the `public_path`
+    thumbnail.save # Returns the file name using the `public_path` value
 
-The image name generated is based on the parameters used. However the `root_path` will always be ignored, in order to allow the application path to be changed without having to regenerate the thumbnails (eg. this always happens after a deploy when using capistrano).
+The image name generated is based on the parameters used. However, the `root_path` will always be ignored, in order to allow the application path to be changed without having to regenerate the thumbnails (eg. this always happens after a capistrano deploy).
 
 The `fixed_size` option will scale the image then crop it to fit the specified dimension.
 You may also resize the photo without cropping it by using either the `min_size` or `max_size` options. `min_size` will scale down the photo while ensuring that neither the width or height is less than the specified value, whereas `max_size` does the opposite.
 
-You may also set defaults or set additional options buy using a `configure` block:
+You may also set defaults or set additional options by using a `configure` block:
 
     Callisto.configure do |config|
       config.thumbnail_root_path   = Rails.root
