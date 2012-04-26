@@ -25,7 +25,7 @@ module Callisto
       location = File.join(root_path, prefix)
       if !File.exist?(save_path)
         FileUtils.mkdir_p(location) unless File.directory?(location)
-        task = Shell.new("convert", "#{file_path} -strip -quality #{quality || 90} -resize #{size}#{flag} #{crop} #{save_path}")
+        task = Shell.new("convert", "#{file_path} -strip -quality #{quality} -resize #{size}#{flag} #{crop} #{save_path}")
         pid = Callisto::Pool.instance << task
         Callisto::Pool.instance.wait(pid)
       end

@@ -10,7 +10,7 @@ describe "Thumbnail" do
 
   before do
     reset_pool
-    Callisto.configuration.load_defaults
+    Callisto.configuration.reset
   end
 
   describe "when saving" do

@@ -10,16 +10,20 @@ module Callisto
         :max_workers => 4
       }
 
+      THUMBNAIL = {
+        :quality => 90
+      }
+
     end
 
     attr_accessor :thumbnail_defaults
 
     def initialize
-      self.thumbnail_defaults = {}
-      load_defaults
+      reset
     end
 
-    def load_defaults
+    def reset
+      self.thumbnail_defaults = Defaults::THUMBNAIL
       Pool.settings = Defaults::POOL
     end
 
